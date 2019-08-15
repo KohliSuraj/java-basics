@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         CheckingAccount ca = new CheckingAccount("CheckingAccount", 10500, 100);
@@ -31,5 +33,8 @@ public class Main {
         cod.withdraw(100);
         System.out.println(cod.getBalance());
         System.out.println(cod.getNumOfAccounts());
+        List<BankAccount> allAccounts = cod.getAllAccounts();
+        CertificateOfDeposit myAccount = (CertificateOfDeposit) allAccounts.get(2);
+        System.out.println(myAccount.getDateOfMaturity());
         }
 }
