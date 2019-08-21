@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 class Solution {
 
@@ -10,7 +8,7 @@ class Solution {
      * Sample Input
      * H1 America
      * H2 North America
-     *
+     * 
      * Sample Output
      * <ul><li>America
      * <ul><li>North America
@@ -47,43 +45,43 @@ class Solution {
         System.out.println(html);
     }
 
-
-    /////////// BEGIN EDITABLE //////////////
     private static Node toOutline(List<Heading> headings) {
         // Implement this function. Sample code below builds an
         // outline of only the first heading.
 
         Node root = new Node(new Heading(0, ""));
-
-        root.children.add(new Node(headings.get(0)));
-//        root.children.add(new Node(headings.get(1)));
-//        Node n = root.children.get(0);
-//        n.children.add(new Node(headings.get(2)));
-
-        int maxWeight = -1;
-        int lowestWeight = 1;
-        for (Heading current : headings) {
-            int currentWeight = current.weight;
-            if (currentWeight > maxWeight) {
-                maxWeight = currentWeight;
-            }
-            if( currentWeight > lowestWeight ) {
-                // add as a child
-                addNodeAsAChild(root, new Node(current));
-            } else if (currentWeight == lowestWeight){
-                // add in the same level
-            } else {
-                // add to the root
-            }
+        for (Heading head : headings) {
+            // recursive function to iterate nodes
+            iterateNodes(root, head, null);
         }
         return root;
     }
 
-    private static Node addNodeAsAChild(Node node, Node toAdd) {
-        node.children.add(toAdd);
-        return node;
+    private static Node iterateNodes(Node root, Heading head, Node parent) {
+        int currentNodeWeight = root.heading.weight;
+        List<Node> children = root.children;
+        int childrenSize = children.size();
+        if (!root.children.isEmpty()) {
+            if (childrenSize > 0) {
+                if (head.weight > currentNodeWeight) {
+                    iterateNodes(children.get(childrenSize - 1), head, root);
+                } else if (head.weight == currentNodeWeight) {
+                    parent.children.add(new Node(head));
+                } else {
+                    System.out.println("Something is Wrong!");
+                }
+            } else {
+                System.out.println("Children size Else??");
+            }
+        } else {
+            if( head.weight > currentNodeWeight ) {
+                root.children.add(new Node(head));
+            } else {
+                parent.children.add(new Node(head));
+            }
+        }
+        return root;
     }
-    /////////// END EDITABLE //////////////
 
 
     /**
